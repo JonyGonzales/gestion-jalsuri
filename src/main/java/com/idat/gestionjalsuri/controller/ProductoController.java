@@ -62,7 +62,9 @@ public class ProductoController {
 		producto.setFechaIngreso(LocalDate.now());
 		producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
 		producto.setCategoria(categoriaId);
-		producto.setUnidadMedida(unidadMedidaId);		
+		producto.setUnidadMedida(unidadMedidaId);	
+		producto.setEstado("A");		
+
 				
 		Producto productos = this.productoService.registrar(producto);
 
