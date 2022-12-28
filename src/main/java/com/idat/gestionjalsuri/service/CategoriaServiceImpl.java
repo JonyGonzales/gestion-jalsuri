@@ -30,7 +30,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	@Override
 	public boolean eliminar(Long id) {
 		
-		if(id!= null && id<0) {
+		if(id!= null && id>0) {
 			this.categoriaRepository.deleteById(id);
 			return true;
 		}		

@@ -30,7 +30,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Override
 	public boolean eliminar(Long id) {
 		
-		if(id!= null && id<0) {
+		if(id!= null && id>0) {
 			this.UsuarioRepository.deleteById(id);
 			return true;
 		}		
