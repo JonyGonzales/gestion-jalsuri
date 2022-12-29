@@ -15,23 +15,23 @@ import com.idat.gestionjalsuri.repository.UsuarioRepository;
 public class UsuarioServiceImpl implements IUsuarioService {
 
 	@Autowired
-	private UsuarioRepository UsuarioRepository;
+	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	public Usuario registrar(Usuario t) {
-		return this.UsuarioRepository.save(t);
+		return this.usuarioRepository.save(t);
 	}
 
 	@Override
 	public Usuario modificar(Usuario t) {
-		return this.UsuarioRepository.save(t);
+		return this.usuarioRepository.save(t);
 	}
 
 	@Override
 	public boolean eliminar(Long id) {
 		
 		if(id!= null && id>0) {
-			this.UsuarioRepository.deleteById(id);
+			this.usuarioRepository.deleteById(id);
 			return true;
 		}		
 		
@@ -40,7 +40,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
 	@Override
 	public Usuario busca(Long id) {
-		Optional<Usuario> Usuario = this.UsuarioRepository.findById(id);
+		Optional<Usuario> Usuario = this.usuarioRepository.findById(id);
 		
 		if(Usuario.isPresent()) {
 			return Usuario.get();
@@ -52,12 +52,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	@Override
 	public List<Usuario> listar() {
 	
-		return this.UsuarioRepository.findAll();		
+		return this.usuarioRepository.findAll();		
 	}
 
 	@Override
 	public Page<Usuario> listarPagina(Pageable page) {
-		return this.UsuarioRepository.findAll(page);
+		return this.usuarioRepository.findAll(page);
 	}
 
 }

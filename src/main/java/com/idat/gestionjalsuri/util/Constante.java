@@ -14,8 +14,10 @@ public final class Constante {
 	
 	public static final String URLSUBFIJOUSUARIOS="usuarios"; 
 	
-	public static final String URLSUBFIJOUIDADMEDIDA="unidadmedida"; 
-
+	public static final String URLSUBFIJOUNIDADMEDIDA="unidadmedida"; 
 	
+	public static final String URLSUBFIJOTIPODOCUMENTO="tipodocumento";
+
+	public static final String URLSUBFIJOEMPLEADO="empleado";
 
 }

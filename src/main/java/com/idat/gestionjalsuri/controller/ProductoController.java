@@ -18,7 +18,7 @@ import com.idat.gestionjalsuri.util.Constante;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOPRODUCTO)
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin(origins = {"http://192.168.3.25:4200","http://localhost:4200"})
 public class ProductoController {
 
 	@Autowired

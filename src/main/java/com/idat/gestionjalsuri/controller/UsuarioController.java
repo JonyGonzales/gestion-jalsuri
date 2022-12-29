@@ -24,8 +24,7 @@ import com.idat.gestionjalsuri.util.Constante;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOUSUARIOS)
-//@CrossOrigin("http://localhost:4200")
-@CrossOrigin("http://192.168.3.25:4200")
+@CrossOrigin(origins = {"http://192.168.3.25:4200","http://localhost:4200"})
 public class UsuarioController {
 
 	@Autowired
@@ -75,7 +74,7 @@ public class UsuarioController {
 		
 		usuario.setNombre(detalleUsuario.getNombre());
 		usuario.setEmail(detalleUsuario.getEmail());
-		usuario.setPassword(detalleUsuario.getPassword());
+		//usuario.setPassword(detalleUsuario.getPassword());
 		usuario.setEstado("Activo");
 		
 		Usuario usuarioActualizado = usuarioService.modificar(usuario);
@@ -83,8 +82,8 @@ public class UsuarioController {
 
 	}
 
-	@PutMapping("/deshabilitar/{id}")
-	public ResponseEntity<Usuario> deshabilitarUsuarioxId(@PathVariable Long id, @RequestBody Usuario detalleUsuario) {
+	@PutMapping("/cambiaEstado/{id}")
+	public ResponseEntity<Usuario> cambiaEstadoXId(@PathVariable Long id, @RequestBody Usuario detalleUsuario) {
 		Usuario usuario = usuarioService.busca(id);
 		usuario.setEstado(detalleUsuario.getEstado());
 
