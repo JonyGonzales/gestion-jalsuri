@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.idat.gestionjalsuri.controller.beam.PasswordRequest;
 import com.idat.gestionjalsuri.model.entity.Usuario;
 import com.idat.gestionjalsuri.service.IUsuarioService;
 import com.idat.gestionjalsuri.util.Constante;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOUSUARIOS)
-@CrossOrigin(origins = {"http://192.168.3.25:4200","http://localhost:4200"})
+@CrossOrigin(origins = { "http://192.168.3.25:4200", "http://localhost:4200" })
 public class UsuarioController {
 
 	@Autowired
@@ -60,23 +61,23 @@ public class UsuarioController {
 	// Metodo para buscar por ID
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> buscar(@PathVariable("id") Long id) {
-		Usuario cat = usuarioService.busca(id);
-		if (cat == null) {
-			cat = new Usuario();
+		Usuario usu = usuarioService.busca(id);
+		if (usu == null) {
+			usu = new Usuario();
 		}
-		return new ResponseEntity<Usuario>(cat, HttpStatus.OK);
+		return new ResponseEntity<Usuario>(usu, HttpStatus.OK);
 	}
 
 	// Metodo para Actualizar por ID
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> actualizarUsuarioxId(@PathVariable Long id, @RequestBody Usuario detalleUsuario) {
 		Usuario usuario = usuarioService.busca(id);
-		
+
 		usuario.setNombre(detalleUsuario.getNombre());
 		usuario.setEmail(detalleUsuario.getEmail());
-		//usuario.setPassword(detalleUsuario.getPassword());
-		usuario.setEstado("Activo");
-		
+		usuario.setRole(detalleUsuario.getRole());
+		// usuario.setEstado("Activo");
+
 		Usuario usuarioActualizado = usuarioService.modificar(usuario);
 		return ResponseEntity.ok(usuarioActualizado);
 
@@ -89,6 +90,21 @@ public class UsuarioController {
 
 		Usuario usuarioActualizado = usuarioService.modificar(usuario);
 		return ResponseEntity.ok(usuarioActualizado);
+
+	}
+
+	@PutMapping("/cambioPassword/{id}")
+	public ResponseEntity<Usuario> cambiaPasswordXId(@PathVariable Long id,@RequestBody PasswordRequest passwordRequest) {
+		Usuario usuario = usuarioService.busca(id);
+
+		if (passwordRequest.getOldPassword().equals(usuario.getPassword()) && passwordRequest.getNewPassword().length() > 3) {
+			usuario.setPassword(passwordRequest.getNewPassword());
+			Usuario usuarioActualizado = usuarioService.modificar(usuario);
+			return ResponseEntity.ok(usuarioActualizado);
+		} 
+
+			return ResponseEntity.notFound().build();
+
 
 	}
 
