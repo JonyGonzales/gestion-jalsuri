@@ -10,8 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.idat.gestionjalsuri.model.Generico;
-
 @Entity
 @Table(name="productos")
 public class Producto extends Generico{

@@ -40,10 +40,10 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
 	@Override
 	public Usuario busca(Long id) {
-		Optional<Usuario> Usuario = this.usuarioRepository.findById(id);
+		Optional<Usuario> usuario = this.usuarioRepository.findById(id);
 		
-		if(Usuario.isPresent()) {
-			return Usuario.get();
+		if(usuario.isPresent()) {
+			return usuario.get();
 		}
 				
 		return null;

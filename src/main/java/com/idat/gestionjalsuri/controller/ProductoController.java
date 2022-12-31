@@ -1,9 +1,7 @@
 package com.idat.gestionjalsuri.controller;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.idat.gestionjalsuri.controller.beam.ProductoRequest;
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Producto;
@@ -57,7 +56,7 @@ public class ProductoController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Producto> buscarXId(@PathVariable("id") Long id) throws ExceptionService {
-		return new ResponseEntity<Producto>(this.productoService.buscarXid(id),HttpStatus.OK);
+		return new ResponseEntity<>(this.productoService.buscarXid(id),HttpStatus.OK);
 	}
 	
 		
@@ -66,7 +65,7 @@ public class ProductoController {
 	public ResponseEntity<Void> eliminarProducto(@PathVariable("id") Long id) throws ExceptionService {
 		this.productoService.eliminar(id);
 
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

@@ -9,32 +9,44 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.idat.gestionjalsuri.model.entity.Categoria;
+import com.idat.gestionjalsuri.model.request.CategoriaRequest;
 import com.idat.gestionjalsuri.repository.CategoriaRepository;
 
 @Service
 public class CategoriaServiceImpl implements ICategoriaService {
 
+	
+	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
 	@Override
-	public Categoria registrar(Categoria t) {
-		return this.categoriaRepository.save(t);
+	public Categoria registrar(CategoriaRequest t) {
+		Categoria categoria = new Categoria() ;
+		
+		categoria.setNombre(t.getNombre());
+		categoria.setEstado("Activo");
+				
+		return this.categoriaRepository.save(categoria);
 	}
 
 	@Override
-	public Categoria modificar(Categoria t) {
-		return this.categoriaRepository.save(t);
+	public Categoria modificar(CategoriaRequest t) {
+		Categoria categoria = new Categoria() ;
+		
+		categoria.setNombre(t.getNombre());
+		
+		return this.categoriaRepository.save(categoria);
 	}
 
 	@Override
 	public boolean eliminar(Long id) {
-		
-		if(id!= null && id>0) {
+		Optional<Categoria> categoria = this.categoriaRepository.findById(id);
+			
+		if(categoria.isPresent()) {
 			this.categoriaRepository.deleteById(id);
 			return true;
 		}		
-		
 		return false;
 	}
 
@@ -51,7 +63,6 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
 	@Override
 	public List<Categoria> listar() {
-	
 		return this.categoriaRepository.findAll();		
 	}
 

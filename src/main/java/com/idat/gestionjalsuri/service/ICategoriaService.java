@@ -1,8 +1,31 @@
 package com.idat.gestionjalsuri.service;
 
-import com.idat.gestionjalsuri.model.entity.Categoria;
-import com.idat.gestionjalsuri.service.generic.ICRUD;
+import java.util.List;
 
-public interface ICategoriaService extends ICRUD<Categoria> {
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.idat.gestionjalsuri.model.entity.Categoria;
+import com.idat.gestionjalsuri.model.request.CategoriaRequest;
+
+public interface ICategoriaService {
+	
+
+	public Categoria registrar(CategoriaRequest t) ;
+
+	
+	public Categoria modificar(CategoriaRequest t) ;
+
+	
+	public boolean eliminar(Long id) ;
+
+	
+	public Categoria busca(Long id) ;
+
+	
+	public List<Categoria> listar() ;
+
+	
+	public Page<Categoria> listarPagina(Pageable page);
 
 }

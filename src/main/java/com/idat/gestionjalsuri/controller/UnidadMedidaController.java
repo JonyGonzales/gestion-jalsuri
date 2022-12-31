@@ -43,7 +43,7 @@ public class UnidadMedidaController {
 			if (um == null) {
 				um = new UnidadMedida();
 			}
-			return new ResponseEntity<UnidadMedida>(um, HttpStatus.OK);
+			return new ResponseEntity<>(um, HttpStatus.OK);
 		}
 
 }

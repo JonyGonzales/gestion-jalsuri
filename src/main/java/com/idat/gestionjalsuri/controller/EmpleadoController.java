@@ -64,7 +64,7 @@ public class EmpleadoController {
 			if (emple == null) {
 				emple = new Empleado();
 			}
-			return new ResponseEntity<Empleado>(emple, HttpStatus.OK);
+			return new ResponseEntity<>(emple, HttpStatus.OK);
 		}
 
 		// Metodo para Actualizar por ID

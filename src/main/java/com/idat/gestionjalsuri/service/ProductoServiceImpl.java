@@ -37,27 +37,26 @@ public class ProductoServiceImpl implements IProductoService {
 		Producto producto = new Producto();
 		Optional<Categoria> categoria = this.categoriaRepository.findById(productoRequest.getCategoria());
 		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(productoRequest.getUnidadMedida());
-		if (!categoria.isPresent() && !unidadMedida.isPresent()) {
-			return null;
+		if (categoria.isPresent() && unidadMedida.isPresent()) {
+			producto.setNombre(productoRequest.getNombre());
+			producto.setStock(productoRequest.getStock());
+			producto.setPrecio(productoRequest.getPrecio());
+			producto.setFechaIngreso(LocalDate.now());
+			producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
+			producto.setEstado("Activo");
+			producto.setCategoria(categoria.get());
+			producto.setUnidadMedida(unidadMedida.get());
+			return this.productoRepository.save(producto);
 		}
-
-		producto.setNombre(productoRequest.getNombre());
-		producto.setStock(productoRequest.getStock());
-		producto.setPrecio(productoRequest.getPrecio());
-		producto.setFechaIngreso(LocalDate.now());
-		producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
-		producto.setCategoria(categoria.get());
-		producto.setUnidadMedida(unidadMedida.get());
-		producto.setEstado("Activo");
-
-		return this.productoRepository.save(producto);
+		
+		return null;
+		
 	}
 
 	@Override
 	public List<Producto> listar() {
 		return this.productoRepository.findAll().stream().filter(p -> p.getStock() > 0).collect(Collectors.toList());
-		// return this.productoRepository.findAll().stream().filter(p->
-		// p.estado().equals("A")).collect(Collectors.toList());
+
 	}
 
 	@Override

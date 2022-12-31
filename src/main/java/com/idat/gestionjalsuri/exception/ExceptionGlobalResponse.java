@@ -10,8 +10,8 @@ public class ExceptionGlobalResponse {
 
 	@ExceptionHandler(ExceptionService.class)
 	public ResponseEntity<ErrorResponse> handlerExceptionService(ExceptionService exs){
-		
-		return new ResponseEntity<ErrorResponse>(new ErrorResponse("-1","Error ", HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		return new ResponseEntity<>(new ErrorResponse("-1","Error ", HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 }

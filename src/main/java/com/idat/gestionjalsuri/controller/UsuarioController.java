@@ -65,18 +65,16 @@ public class UsuarioController {
 		if (usu == null) {
 			usu = new Usuario();
 		}
-		return new ResponseEntity<Usuario>(usu, HttpStatus.OK);
+		return new ResponseEntity<>(usu, HttpStatus.OK);
 	}
 
 	// Metodo para Actualizar por ID
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> actualizarUsuarioxId(@PathVariable Long id, @RequestBody Usuario detalleUsuario) {
 		Usuario usuario = usuarioService.busca(id);
-
 		usuario.setNombre(detalleUsuario.getNombre());
 		usuario.setEmail(detalleUsuario.getEmail());
 		usuario.setRole(detalleUsuario.getRole());
-		// usuario.setEstado("Activo");
 
 		Usuario usuarioActualizado = usuarioService.modificar(usuario);
 		return ResponseEntity.ok(usuarioActualizado);

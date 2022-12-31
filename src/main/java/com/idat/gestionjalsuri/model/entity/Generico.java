@@ -1,4 +1,4 @@
-package com.idat.gestionjalsuri.model;
+package com.idat.gestionjalsuri.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;

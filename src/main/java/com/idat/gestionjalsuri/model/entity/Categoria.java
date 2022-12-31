@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.idat.gestionjalsuri.model.Generico;
-
 @Entity
 @Table(name="categorias")
 public class Categoria extends Generico {
