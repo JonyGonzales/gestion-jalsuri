@@ -22,7 +22,7 @@ public class Producto extends Generico{
 	
 	private String nombre;
 	
-	private Integer stock ;
+	private Double stock ;
 	
 	private Double precio;
 	
@@ -54,11 +54,11 @@ public class Producto extends Generico{
 		this.nombre = nombre;
 	}
 
-	public Integer getStock() {
+	public Double getStock() {
 		return stock;
 	}
 
-	public void setStock(Integer stock) {
+	public void setStock(Double stock) {
 		this.stock = stock;
 	}
 

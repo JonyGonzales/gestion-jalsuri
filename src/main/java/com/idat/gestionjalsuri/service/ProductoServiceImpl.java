@@ -32,8 +32,8 @@ public class ProductoServiceImpl implements IProductoService{
 	public Producto guardar(ProductoRequest productoRequest) {
 		
 		Producto producto = new Producto() ;
-		Optional<Categoria> categoria = this.categoriaRepository.findById(productoRequest.getIdCategoria());
-		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(productoRequest.getIdCategoria());
+		Optional<Categoria> categoria = this.categoriaRepository.findById(productoRequest.getCategoria());
+		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(productoRequest.getUnidadMedida());
 		if (!categoria.isPresent() && !unidadMedida.isPresent()) {
 			return null;
 		}
@@ -52,7 +52,7 @@ public class ProductoServiceImpl implements IProductoService{
 
 	@Override
 	public List<Producto> listar() {
-		return this.productoRepository.findAll().stream().filter(p-> p.getStock()>10).collect(Collectors.toList());
+		return this.productoRepository.findAll().stream().filter(p-> p.getStock()>0).collect(Collectors.toList());
 		//		return this.productoRepository.findAll().stream().filter(p-> p.estado().equals("A")).collect(Collectors.toList());
 	}
 

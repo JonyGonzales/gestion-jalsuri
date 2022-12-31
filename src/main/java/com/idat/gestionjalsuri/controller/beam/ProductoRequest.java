@@ -6,14 +6,13 @@ public class ProductoRequest {
 	
 	private String nombre;
 	
-	private Integer stock ;
+	private Double stock ;
 	
 	private Double precio;
 	
-	private Long idCategoria;
+	private Long categoria;
 
-	private Long idUnidadMedida;
-
+	private Long unidadMedida;
 
 	public String getNombre() {
 		return nombre;
@@ -23,11 +22,11 @@ public class ProductoRequest {
 		this.nombre = nombre;
 	}
 
-	public Integer getStock() {
+	public Double getStock() {
 		return stock;
 	}
 
-	public void setStock(Integer stock) {
+	public void setStock(Double stock) {
 		this.stock = stock;
 	}
 
@@ -39,23 +38,20 @@ public class ProductoRequest {
 		this.precio = precio;
 	}
 
-
-	public Long getIdCategoria() {
-		return idCategoria;
+	public Long getCategoria() {
+		return categoria;
 	}
 
-	public void setIdCategoria(Long idCategoria) {
-		this.idCategoria = idCategoria;
+	public void setCategoria(Long categoria) {
+		this.categoria = categoria;
 	}
 
-	public Long getIdUnidadMedida() {
-		return idUnidadMedida;
+	public Long getUnidadMedida() {
+		return unidadMedida;
 	}
 
-	public void setIdUnidadMedida(Long idUnidadMedida) {
-		this.idUnidadMedida = idUnidadMedida;
+	public void setUnidadMedida(Long unidadMedida) {
+		this.unidadMedida = unidadMedida;
 	}
-
-	
 	
 }

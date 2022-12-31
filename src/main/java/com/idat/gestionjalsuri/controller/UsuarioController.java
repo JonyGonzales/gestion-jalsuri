@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.idat.gestionjalsuri.controller.beam.PasswordRequest;
 import com.idat.gestionjalsuri.model.entity.Usuario;
 import com.idat.gestionjalsuri.service.IUsuarioService;
@@ -25,7 +26,7 @@ import com.idat.gestionjalsuri.util.Constante;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOUSUARIOS)
-@CrossOrigin(origins = { "http://192.168.3.25:4200", "http://localhost:4200" })
+@CrossOrigin(origins = {"http://192.168.3.25:4200","http://localhost:4200","https://jalsuriweb.000webhostapp.com"})
 public class UsuarioController {
 
 	@Autowired
@@ -48,7 +49,6 @@ public class UsuarioController {
 	// Metodo para Crear Usuarios
 	@PostMapping
 	public ResponseEntity<Usuario> agregar(@RequestBody Usuario usuario) {
-		usuario.setEstado("Activo");
 		Usuario usuarios = this.usuarioService.registrar(usuario);
 
 		if (usuarios != null) {
