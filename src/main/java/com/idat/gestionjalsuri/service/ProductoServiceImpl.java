@@ -40,7 +40,7 @@ public class ProductoServiceImpl implements IProductoService {
 		Producto producto = new Producto();
 		Optional<Categoria> categoria = this.categoriaRepository.findById(productoRequest.getCategoria());
 		Optional<Proveedor> proveedor = this.proveedorRepository.findById(productoRequest.getProveedor());
-		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(2l);
+		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(productoRequest.getUnidadMedida());
 		if (categoria.isPresent() && unidadMedida.isPresent() && proveedor.isPresent() ) {
 			producto.setNombre(productoRequest.getNombre());
 			producto.setStock(productoRequest.getStock());
