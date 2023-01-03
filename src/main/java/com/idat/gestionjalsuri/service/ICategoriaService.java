@@ -14,7 +14,7 @@ public interface ICategoriaService {
 	public Categoria registrar(CategoriaRequest t) ;
 
 	
-	public Categoria modificar(CategoriaRequest t) ;
+	public Categoria modificar(Long id,CategoriaRequest t) ;
 
 	
 	public boolean eliminar(Long id) ;

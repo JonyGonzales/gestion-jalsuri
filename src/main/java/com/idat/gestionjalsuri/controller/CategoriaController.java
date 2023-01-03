@@ -2,10 +2,13 @@ package com.idat.gestionjalsuri.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
+import com.idat.gestionjalsuri.exception.ExceptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,19 +34,12 @@ public class CategoriaController {
 
 	@GetMapping
 	public ResponseEntity<List<Categoria>> listar() {
-
-		List<Categoria> categoria = this.categoriaService.listar();
-
-		if (categoria.isEmpty()) {
-			return ResponseEntity.noContent().build();
-		}
-
-		return ResponseEntity.ok(categoria);
+		return ResponseEntity.ok(this.categoriaService.listar());
 
 	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> agregar(@RequestBody CategoriaRequest categoriaReq) {
+	public ResponseEntity<Categoria> agregar(@RequestBody @Validated CategoriaRequest categoriaReq) {
 
 		Categoria categoria = this.categoriaService.registrar(categoriaReq);
 
@@ -57,27 +53,15 @@ public class CategoriaController {
 	// Metodo para buscar por ID
 	@GetMapping("/{id}")
 	public ResponseEntity<Categoria> buscar(@PathVariable("id") Long id) {
-		Categoria cat = categoriaService.busca(id);
-		if (cat == null) {
-
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		return new ResponseEntity<>(cat, HttpStatus.OK);
+		return new ResponseEntity<>(categoriaService.busca(id), HttpStatus.OK);
 	}
 
 	// Metodo para Actualizar por ID
 	@PutMapping("/{id}")
 	public ResponseEntity<Categoria> actualizarUsuarioxId(@PathVariable Long id,
-			@RequestBody CategoriaRequest categoriaRequest) {
+			@RequestBody @Validated CategoriaRequest categoriaRequest) {
 
-		Categoria categoria = categoriaService.busca(id);
-		if (categoria == null) {
-
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-
-		Categoria usuarioActualizado = categoriaService.modificar(categoriaRequest);
-		return ResponseEntity.ok(usuarioActualizado);
+		return ResponseEntity.ok(categoriaService.modificar(id,categoriaRequest));
 
 	}
 
@@ -89,8 +73,8 @@ public class CategoriaController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		categoria.setEstado(categoriaRequest.getEstado());
-		Categoria usuarioActualizado = categoriaService.modificar(categoriaRequest);
-		return ResponseEntity.ok(usuarioActualizado);
+		//Categoria usuarioActualizado = categoriaService.modificar(categoriaRequest);
+		return null;//ResponseEntity.ok(usuarioActualizado);
 
 	}
 
