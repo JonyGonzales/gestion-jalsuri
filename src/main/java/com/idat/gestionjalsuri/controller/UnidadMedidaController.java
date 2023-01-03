@@ -1,19 +1,14 @@
 package com.idat.gestionjalsuri.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.idat.gestionjalsuri.model.entity.UnidadMedida;
 import com.idat.gestionjalsuri.service.IUnidadMedidaService;
 import com.idat.gestionjalsuri.util.Constante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOUNIDADMEDIDA)
@@ -44,6 +39,10 @@ public class UnidadMedidaController {
 				um = new UnidadMedida();
 			}
 			return new ResponseEntity<>(um, HttpStatus.OK);
+		}
+		@PostMapping
+		public ResponseEntity<UnidadMedida>insertar(@RequestBody UnidadMedida unidadMedida){
+		return new ResponseEntity<>(this.unidadMedidaService.registrar(unidadMedida),HttpStatus.CREATED);
 		}
 
 }

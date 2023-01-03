@@ -1,14 +1,7 @@
 package com.idat.gestionjalsuri.model.entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name="productos")
@@ -20,7 +13,7 @@ public class Producto extends Generico{
 	
 	private String nombre;
 	
-	private Double stock ;
+	private Integer stock ;
 	
 	private Double precio;
 	
@@ -35,6 +28,11 @@ public class Producto extends Generico{
     @ManyToOne()
     @JoinColumn(name = "id_unidadmedida")
 	private UnidadMedida unidadMedida;
+
+	@ManyToOne()
+	@JoinColumn(name = "id_proveedor")
+	private Proveedor proveedor;
+
 
 	public Long getId() {
 		return id;
@@ -52,11 +50,11 @@ public class Producto extends Generico{
 		this.nombre = nombre;
 	}
 
-	public Double getStock() {
+	public Integer getStock() {
 		return stock;
 	}
 
-	public void setStock(Double stock) {
+	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
 
@@ -100,9 +98,11 @@ public class Producto extends Generico{
 		this.unidadMedida = unidadMedida;
 	}
 
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
 
-	
-	
-	
-	
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
 }

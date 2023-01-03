@@ -1,23 +1,24 @@
 package com.idat.gestionjalsuri.service;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import com.idat.gestionjalsuri.controller.beam.ProductoRequest;
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Categoria;
 import com.idat.gestionjalsuri.model.entity.Producto;
+import com.idat.gestionjalsuri.model.entity.Proveedor;
 import com.idat.gestionjalsuri.model.entity.UnidadMedida;
 import com.idat.gestionjalsuri.repository.CategoriaRepository;
 import com.idat.gestionjalsuri.repository.ProductoRepository;
+import com.idat.gestionjalsuri.repository.ProveedorRepository;
 import com.idat.gestionjalsuri.repository.UnidadMedidaRepository;
+import com.idat.gestionjalsuri.util.Constante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImpl implements IProductoService {
@@ -29,6 +30,8 @@ public class ProductoServiceImpl implements IProductoService {
 	private CategoriaRepository categoriaRepository;
 
 	@Autowired
+	private ProveedorRepository proveedorRepository;
+	@Autowired
 	private ProductoRepository productoRepository;
 
 	@Override
@@ -36,27 +39,32 @@ public class ProductoServiceImpl implements IProductoService {
 
 		Producto producto = new Producto();
 		Optional<Categoria> categoria = this.categoriaRepository.findById(productoRequest.getCategoria());
-		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(productoRequest.getUnidadMedida());
-		if (categoria.isPresent() && unidadMedida.isPresent()) {
+		Optional<Proveedor> proveedor = this.proveedorRepository.findById(productoRequest.getProveedor());
+		Optional<UnidadMedida> unidadMedida = this.unidadMedidaRepository.findById(2l);
+		if (categoria.isPresent() && unidadMedida.isPresent() && proveedor.isPresent() ) {
 			producto.setNombre(productoRequest.getNombre());
 			producto.setStock(productoRequest.getStock());
 			producto.setPrecio(productoRequest.getPrecio());
 			producto.setFechaIngreso(LocalDate.now());
 			producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
-			producto.setEstado("Activo");
+			producto.setEstado(Constante.ESTADO_ACTIBO);
 			producto.setCategoria(categoria.get());
 			producto.setUnidadMedida(unidadMedida.get());
+			producto.setProveedor(proveedor.get());
 			return this.productoRepository.save(producto);
+		}else {
+			throw new ExceptionService("","",HttpStatus.NOT_FOUND);
 		}
-		
-		return null;
-		
+
 	}
 
 	@Override
 	public List<Producto> listar() {
-		return this.productoRepository.findAll().stream().filter(p -> p.getStock() > 0).collect(Collectors.toList());
-
+		List<Producto>productos= this.productoRepository.findAll().stream().filter(p -> p.getEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
+		if (productos.isEmpty()){
+			throw new ExceptionService("-2","Lista vacia",HttpStatus.NOT_FOUND);
+		}
+		return productos;
 	}
 
 	@Override

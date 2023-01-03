@@ -1,22 +1,20 @@
 package com.idat.gestionjalsuri.service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.idat.gestionjalsuri.exception.ExceptionService;
+import com.idat.gestionjalsuri.model.entity.Categoria;
+import com.idat.gestionjalsuri.model.request.CategoriaRequest;
+import com.idat.gestionjalsuri.repository.CategoriaRepository;
 import com.idat.gestionjalsuri.util.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.idat.gestionjalsuri.model.entity.Categoria;
-import com.idat.gestionjalsuri.model.request.CategoriaRequest;
-import com.idat.gestionjalsuri.repository.CategoriaRepository;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaServiceImpl implements ICategoriaService {

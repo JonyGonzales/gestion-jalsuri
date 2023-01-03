@@ -1,25 +1,17 @@
 package com.idat.gestionjalsuri.controller;
 
-import java.net.URI;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.idat.gestionjalsuri.controller.beam.ProductoRequest;
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Producto;
 import com.idat.gestionjalsuri.service.IProductoService;
 import com.idat.gestionjalsuri.util.Constante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOPRODUCTO)
@@ -32,13 +24,7 @@ public class ProductoController {
 	@GetMapping
 	public ResponseEntity<List<Producto>> listar() {
 
-		List<Producto> producto = this.productoService.listar();
-
-		if (producto.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok(producto);
+		return ResponseEntity.ok(this.productoService.listar());
 
 	}
 

@@ -30,6 +30,12 @@ public class UnidadMedida {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "UnidadMedida{" +
+				"id=" + id +
+				", nombre='" + nombre + '\'' +
+				'}';
+	}
 }
