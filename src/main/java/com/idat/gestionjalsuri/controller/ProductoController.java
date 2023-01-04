@@ -1,17 +1,16 @@
 package com.idat.gestionjalsuri.controller;
 
-import com.idat.gestionjalsuri.controller.beam.ProductoRequest;
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Producto;
+import com.idat.gestionjalsuri.model.request.ProductoRequest;
+import com.idat.gestionjalsuri.model.response.DataResponse;
 import com.idat.gestionjalsuri.service.IProductoService;
 import com.idat.gestionjalsuri.util.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOPRODUCTO)
@@ -22,22 +21,14 @@ public class ProductoController {
 	private IProductoService productoService;
 
 	@GetMapping
-	public ResponseEntity<List<Producto>> listar() {
-
+	public ResponseEntity<DataResponse> listar() {
 		return ResponseEntity.ok(this.productoService.listar());
 
 	}
 
 	@PostMapping
-	public ResponseEntity<Producto> agregar(@RequestBody ProductoRequest productoRequest) {
-
-		Producto productos = this.productoService.guardar(productoRequest);
-
-		if (productos != null) {
-			return ResponseEntity.created(URI.create("/api/v1/productos" + productoRequest)).build();
-		}
-
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<Producto> agregar(@RequestBody @Validated ProductoRequest productoRequest) {
+		return new ResponseEntity<>(this.productoService.insertar(productoRequest),HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{id}")
@@ -46,7 +37,7 @@ public class ProductoController {
 	}
 	
 		
-	// Metodo que sirve para eliminar un item
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminarProducto(@PathVariable("id") Long id) throws ExceptionService {
 		this.productoService.eliminar(id);
