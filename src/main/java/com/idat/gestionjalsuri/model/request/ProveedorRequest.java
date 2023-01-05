@@ -20,6 +20,7 @@ public class ProveedorRequest extends Generico {
 	private String documento;
 	@NotBlank
 	private String telefono;
+	@NotBlank
 	@Email
 	private String email;
 	
