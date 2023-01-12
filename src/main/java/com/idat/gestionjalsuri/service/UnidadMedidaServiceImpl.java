@@ -1,15 +1,14 @@
 package com.idat.gestionjalsuri.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.idat.gestionjalsuri.model.entity.UnidadMedida;
+import com.idat.gestionjalsuri.repository.UnidadMedidaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.idat.gestionjalsuri.model.entity.UnidadMedida;
-import com.idat.gestionjalsuri.repository.UnidadMedidaRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UnidadMedidaServiceImpl implements IUnidadMedidaService{
@@ -20,7 +19,7 @@ public class UnidadMedidaServiceImpl implements IUnidadMedidaService{
 	
 	@Override
 	public UnidadMedida registrar(UnidadMedida t) {
-		return null;
+		return this.unidadMedidaRepository.save(t);
 	}
 
 	@Override

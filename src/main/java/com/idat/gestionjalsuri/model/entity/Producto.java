@@ -1,16 +1,7 @@
 package com.idat.gestionjalsuri.model.entity;
 
+import javax.persistence.*;
 import java.time.LocalDate;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.idat.gestionjalsuri.model.Generico;
 
 @Entity
 @Table(name="productos")
@@ -37,6 +28,11 @@ public class Producto extends Generico{
     @ManyToOne()
     @JoinColumn(name = "id_unidadmedida")
 	private UnidadMedida unidadMedida;
+
+	@ManyToOne()
+	@JoinColumn(name = "id_proveedor")
+	private Proveedor proveedor;
+
 
 	public Long getId() {
 		return id;
@@ -102,9 +98,11 @@ public class Producto extends Generico{
 		this.unidadMedida = unidadMedida;
 	}
 
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
 
-	
-	
-	
-	
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
 }

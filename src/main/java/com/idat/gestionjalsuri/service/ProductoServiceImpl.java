@@ -1,64 +1,113 @@
 package com.idat.gestionjalsuri.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.idat.gestionjalsuri.exception.ExceptionService;
+import com.idat.gestionjalsuri.model.entity.Categoria;
+import com.idat.gestionjalsuri.model.entity.Producto;
+import com.idat.gestionjalsuri.model.entity.Proveedor;
+import com.idat.gestionjalsuri.model.entity.UnidadMedida;
+import com.idat.gestionjalsuri.model.request.ProductoRequest;
+import com.idat.gestionjalsuri.model.request.ProductoStockRequest;
+import com.idat.gestionjalsuri.model.response.DataResponse;
+import com.idat.gestionjalsuri.model.response.GenericResponse;
+import com.idat.gestionjalsuri.repository.CategoriaRepository;
+import com.idat.gestionjalsuri.repository.ProductoRepository;
+import com.idat.gestionjalsuri.repository.ProveedorRepository;
+import com.idat.gestionjalsuri.repository.UnidadMedidaRepository;
+import com.idat.gestionjalsuri.util.Constante;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.idat.gestionjalsuri.model.entity.Producto;
-import com.idat.gestionjalsuri.repository.ProductoRepository;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-public class ProductoServiceImpl implements IProductoService{
+public class ProductoServiceImpl implements IProductoService {
 
-	
-	@Autowired
-	private ProductoRepository productoRepository;
-	
-	@Override
-	public Producto registrar(Producto t) {
-		
-		return this.productoRepository.save(t);
-	}
+    @Autowired
+    private UnidadMedidaRepository unidadMedidaRepository;
 
-	@Override
-	public Producto modificar(Producto t) {
-		return this.productoRepository.save(t);
-	}
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
-	@Override
-	public boolean eliminar(Long id) {
-		Optional<Producto> producto =this.productoRepository.findById(id);
-		
-		if(producto.isPresent()) {
-			return true;
-		}
-		
-		return false;
-	}
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+    @Autowired
+    private ProductoRepository productoRepository;
 
-	@Override
-	public Producto busca(Long id) {
-		Optional<Producto> producto = this.productoRepository.findById(id);
-		
-		if(producto.isPresent()) {
-			return producto.get();
-		}
-		
-		return null;
-	}
+    @Override
+    public Producto insertar(ProductoRequest productoRequest) {
 
-	@Override
-	public List<Producto> listar() {
-		return this.productoRepository.findAll();
-	}
+        Producto producto = new Producto();
+        if (this.productoRepository.existsByNombre(productoRequest.getNombre())) {
+            throw new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, Constante.MENSAGE_NOMBRE_EXISTE, HttpStatus.BAD_REQUEST);
+        }
+        Optional<Categoria> categoria = Optional.ofNullable(this.categoriaRepository.findById(productoRequest.getIdCategoria())
+                .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de categoria no encontrado...", HttpStatus.NOT_FOUND)));
+        Optional<Proveedor> proveedor = Optional.ofNullable(this.proveedorRepository.findById(productoRequest.getIdProveedor())
+                .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de proveedor no encontrado...", HttpStatus.NOT_FOUND)));
+        Optional<UnidadMedida> unidadMedida = Optional.ofNullable(this.unidadMedidaRepository.findById(productoRequest.getIdUnidadMedida())
+                .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de unidad medida no encontrado...", HttpStatus.NOT_FOUND)));
 
-	@Override
-	public Page<Producto> listarPagina(Pageable page) {
-		return this.productoRepository.findAll(page);
-	}
+        producto.setNombre(productoRequest.getNombre());
+        producto.setStock(productoRequest.getStock());
+        producto.setPrecio(productoRequest.getPrecio());
+        producto.setFechaIngreso(LocalDate.now());
+        producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
+        producto.setEstado(Constante.ESTADO_ACTIBO);
+        producto.setCategoria(categoria.get());
+        producto.setUnidadMedida(unidadMedida.get());
+        producto.setProveedor(proveedor.get());
+        return this.productoRepository.save(producto);
+
+    }
+
+
+    @Override
+    public GenericResponse actualizarStok(ProductoStockRequest request) {
+        Producto producto = this.buscarXid(request.getId());
+        producto.setStock(request.getStock() + producto.getStock());
+        producto.setFechaIngreso(LocalDate.now());
+        producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
+        this.productoRepository.save(producto);
+        return GenericResponse.builder().cod("0").mensage("Stock actualizado").build();
+    }
+
+    @Override
+    public DataResponse listar() {
+        DataResponse response = new DataResponse();
+        List<Producto> productos = this.productoRepository.findAll().stream().filter(p -> p.getEstado().equalsIgnoreCase("A")).collect(Collectors.toList());
+        if (productos.isEmpty()) {
+            throw new ExceptionService("-2", "Lista vacia", HttpStatus.NOT_FOUND);
+        }
+        response.setProductos(productos);
+        response.setTotalProducto(productos.stream().mapToInt(p -> p.getStock()).sum());
+        response.setPrecioTotalProducto(productos.stream().mapToDouble(p -> p.getPrecio() * p.getStock()).sum());
+        return response;
+    }
+
+    @Override
+    public Producto buscarXid(Long id) throws ExceptionService {
+
+        Optional<Producto> producto = Optional.ofNullable(this.productoRepository.findById(id)
+                .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de producto no encontrado...", HttpStatus.NOT_FOUND)));
+        log.info("Esdo producto: {}", producto.get().getEstado());
+        if (!producto.get().getEstado().equalsIgnoreCase("A")) {
+            throw new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Estado de producto incorrecto", HttpStatus.NOT_FOUND);
+        }
+        return producto.get();
+    }
+
+    @Override
+    public void eliminar(Long id) throws ExceptionService {
+        this.buscarXid(id);
+        this.productoRepository.deleteById(id);
+
+
+    }
 
 }

@@ -1,76 +1,54 @@
 package com.idat.gestionjalsuri.controller;
 
-import java.net.URI;
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.idat.gestionjalsuri.controller.beam.ProductoRequest;
-import com.idat.gestionjalsuri.model.entity.Categoria;
+import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Producto;
-import com.idat.gestionjalsuri.model.entity.UnidadMedida;
-import com.idat.gestionjalsuri.service.ICategoriaService;
+import com.idat.gestionjalsuri.model.request.ProductoRequest;
+import com.idat.gestionjalsuri.model.request.ProductoStockRequest;
+import com.idat.gestionjalsuri.model.response.DataResponse;
+import com.idat.gestionjalsuri.model.response.GenericResponse;
 import com.idat.gestionjalsuri.service.IProductoService;
-import com.idat.gestionjalsuri.service.IUnidadMedidaService;
+import com.idat.gestionjalsuri.util.Constante;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping(Constante.URLPREFIJO + Constante.URLSUBFIJOPRODUCTO)
+@CrossOrigin(origins = { "http://192.168.3.25:4200", "http://localhost:4200", "https://jalsuriweb.000webhostapp.com" })
 public class ProductoController {
 
 	@Autowired
 	private IProductoService productoService;
-	
-	@Autowired
-	private ICategoriaService categoriaService;
-	
-	@Autowired
-	private IUnidadMedidaService unidadMedidaService;
-	
+
 	@GetMapping
-	public ResponseEntity<List<Producto>> listar() {
-
-		List<Producto> producto = this.productoService.listar();
-
-		if (producto.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok(producto);
+	public ResponseEntity<DataResponse> listar() {
+		return ResponseEntity.ok(this.productoService.listar());
 
 	}
 
-	
-	
 	@PostMapping
-	public ResponseEntity<Producto> agregar(@RequestBody ProductoRequest productoRequest) {
+	public ResponseEntity<Producto> agregar(@RequestBody @Validated ProductoRequest productoRequest) {
+		return new ResponseEntity<>(this.productoService.insertar(productoRequest),HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Producto> buscarXId(@PathVariable("id") Long id) throws ExceptionService {
+		return new ResponseEntity<>(this.productoService.buscarXid(id),HttpStatus.OK);
+	}
+	
 		
-		Producto producto = new Producto() ;
-		Categoria categoriaId =this.categoriaService.busca(productoRequest.getIdCategoria());
-		UnidadMedida unidadMedidaId =this.unidadMedidaService.busca(productoRequest.getIdUnidadMedida());
-		
-		
-		producto.setNombre(productoRequest.getNombre());
-		producto.setStock(productoRequest.getStock());
-		producto.setPrecio(productoRequest.getPrecio());
-		producto.setFechaIngreso(LocalDate.now());
-		producto.setFechaVencimiento(LocalDate.now().plusMonths(2));
-		producto.setCategoria(categoriaId);
-		producto.setUnidadMedida(unidadMedidaId);		
-				
-		Producto productos = this.productoService.registrar(producto);
 
-		if (productos != null) {
-			return ResponseEntity.created(URI.create("/api/v1/productos" + productoRequest)).build();
-		}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> eliminarProducto(@PathVariable("id") Long id) throws ExceptionService {
+		this.productoService.eliminar(id);
 
-		return ResponseEntity.notFound().build();
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	@PostMapping("/actualizar-stock")
+	public ResponseEntity<GenericResponse> actualizarStok(@RequestBody @Validated ProductoStockRequest request){
+		return ResponseEntity.ok(this.productoService.actualizarStok(request));
 	}
 
 }

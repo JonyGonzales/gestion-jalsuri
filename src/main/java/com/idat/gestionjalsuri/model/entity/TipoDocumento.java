@@ -7,11 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="categorias")
-public class Categoria extends Generico {
+@Table(name="tipo_documento")
+public class TipoDocumento {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
 	
 	private String nombre;
@@ -31,7 +31,4 @@ public class Categoria extends Generico {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-	
-
 }
