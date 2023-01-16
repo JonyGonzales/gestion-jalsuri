@@ -1,9 +1,10 @@
-package com.idat.gestionjalsuri.service;
+package com.idat.gestionjalsuri.service.impl;
 
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Proveedor;
 import com.idat.gestionjalsuri.model.request.ProveedorRequest;
 import com.idat.gestionjalsuri.repository.ProveedorRepository;
+import com.idat.gestionjalsuri.service.IProveedorService;
 import com.idat.gestionjalsuri.util.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

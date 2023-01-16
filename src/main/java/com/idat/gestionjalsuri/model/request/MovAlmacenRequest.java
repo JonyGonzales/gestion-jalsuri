@@ -9,10 +9,11 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class MovAlmacenRequest {
 
-    @NotBlank
-    private String tipoMovimiento;
+
     @NotBlank
     private String obsevacionMovimiento;
+    private int catidadMovimineto;
+    private Long tipoMovimiento;
     private Long tipoDocumento;
     private Long usuario;
 }

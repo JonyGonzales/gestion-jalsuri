@@ -5,11 +5,13 @@ import com.idat.gestionjalsuri.model.entity.MovAlmacen;
 import com.idat.gestionjalsuri.model.request.MovAlmacenRequest;
 import com.idat.gestionjalsuri.model.request.MoverProductoRequest;
 import com.idat.gestionjalsuri.model.response.GenericResponse;
+import com.idat.gestionjalsuri.model.response.MovAlmacenResponse;
 import com.idat.gestionjalsuri.service.IMovAlmacenService;
 import com.idat.gestionjalsuri.util.Constante;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,18 +28,13 @@ public class MovimientoAlmacenController {
 	private IMovAlmacenService movAlmacenService;
 
 	@GetMapping
-	public ResponseEntity<List<MovAlmacen>> listar() {
-		return ResponseEntity.ok(this.movAlmacenService.listar());
+	public ResponseEntity<MovAlmacenResponse> listar(@RequestParam(name="tipo",
+			required=false) String tipo) {
+		return ResponseEntity.ok(this.movAlmacenService.listar(tipo));
 
 	}
 
-	@PostMapping
-	public ResponseEntity<Void> agregar(@RequestBody @Validated MovAlmacenRequest request) {
-		log.info("MovAlmacenRequest: {}",request);
-		log.info("MovAlmacenRequest: {}",request.getObsevacionMovimiento());
-		this.movAlmacenService.registrar(request);
-		return ResponseEntity.ok().build();
-	}
+
 
 
 	@GetMapping("/{id}")
@@ -61,9 +58,9 @@ public class MovimientoAlmacenController {
 		return ResponseEntity.ok(movAlmacenService.eliminar(id));
 	}
 
-	@PostMapping ("/mover/{id}")
-	public ResponseEntity<GenericResponse> moverProducto(@PathVariable("id")Long id, @RequestBody  @Validated MoverProductoRequest request){
-		return ResponseEntity.ok(this.movAlmacenService.moverProducto(id,request));
+	@PostMapping ("/mover")
+	public ResponseEntity<GenericResponse> moverProducto(@RequestBody  @Validated MoverProductoRequest request){
+		return ResponseEntity.ok(this.movAlmacenService.registrarMovimiento(request));
 	}
 	private void validarNumerico(String id){
 		if (!StringUtils.isNumeric(String.valueOf(id))){

@@ -1,4 +1,4 @@
-package com.idat.gestionjalsuri.service;
+package com.idat.gestionjalsuri.service.impl;
 
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Categoria;
@@ -9,6 +9,7 @@ import com.idat.gestionjalsuri.model.request.DetalleMovimientoRequest;
 import com.idat.gestionjalsuri.repository.DetalleMovimintoRepository;
 import com.idat.gestionjalsuri.repository.MovAlmacenRepository;
 import com.idat.gestionjalsuri.repository.ProductoRepository;
+import com.idat.gestionjalsuri.service.IDetalleNovimintoService;
 import com.idat.gestionjalsuri.util.Constante;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +43,10 @@ public class DetalleNovimintoServiceImpl implements IDetalleNovimintoService {
                 .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de movimiento almacen no encontrado...", HttpStatus.NOT_FOUND)));
 
         DetalleMovimiento detalleMovimiento = DetalleMovimiento.builder()
-                .cantidadProdocto(producto.get().getStock())
+               // .cantidadProdocto(producto.get().getStock())
                 .obsevacionMovimiento(t.getObsevacionMovimiento())
-                .producto(producto.get())
-                .movAlmacen(movAlmacen.get())
+                //.producto(producto.get())
+                //.movAlmacen(movAlmacen.get())
                 .estado("A")
                 .build();
         this.detalleMovimintoRepository.save(detalleMovimiento);
@@ -62,10 +63,10 @@ public class DetalleNovimintoServiceImpl implements IDetalleNovimintoService {
 
         DetalleMovimiento detalleMovimiento = DetalleMovimiento.builder()
                 .id(this.busca(id).getId())
-                .cantidadProdocto(producto.get().getStock())
+                //.cantidadProdocto(producto.get().getStock())
                 .obsevacionMovimiento(t.getObsevacionMovimiento())
-                .producto(producto.get())
-                .movAlmacen(movAlmacen.get())
+                //.producto(producto.get())
+                //.movAlmacen(movAlmacen.get())
                 .estado("A")
                 .build();
         this.detalleMovimintoRepository.save(detalleMovimiento);
@@ -93,7 +94,7 @@ public class DetalleNovimintoServiceImpl implements IDetalleNovimintoService {
     public List<DetalleMovimiento> listar() {
         List<DetalleMovimiento> movAlmacens = this.detalleMovimintoRepository.findAll()
                 .stream()
-                .filter(m -> m.getEstado().equalsIgnoreCase("A"))
+                .filter(m ->m.getEstado()!=null && m.getEstado().equalsIgnoreCase("A"))
                 .sorted(Comparator.comparing(DetalleMovimiento::getId).reversed())
                 .collect(Collectors.toList());
         if (movAlmacens.isEmpty()) {

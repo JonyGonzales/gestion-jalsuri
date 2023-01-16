@@ -16,7 +16,8 @@ public class Producto extends Generico{
 	private Integer stock ;
 	
 	private Double precio;
-	
+	private Long codTransaccion;
+
 	private LocalDate fechaIngreso;
 	
 	private LocalDate fechaVencimiento;
@@ -104,5 +105,13 @@ public class Producto extends Generico{
 
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
+	}
+
+	public Long getCodTransaccion() {
+		return codTransaccion;
+	}
+
+	public void setCodTransaccion(Long codTransaccion) {
+		this.codTransaccion = codTransaccion;
 	}
 }

@@ -15,14 +15,10 @@ public class DetalleMovimiento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Integer cantidadProdocto;
 	private String obsevacionMovimiento;
-	@ManyToOne()
-	@JoinColumn(name = "id_mov_almacen")
-	private MovAlmacen movAlmacen;
-
-	@ManyToOne()
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
+	private Long idMovAlmacen;
+	private Long idProducto;
+	private String nombreProducto;
+	private String unidadMedida;
 	private String estado;
 }

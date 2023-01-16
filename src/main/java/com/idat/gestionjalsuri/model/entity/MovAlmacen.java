@@ -16,8 +16,7 @@ public class MovAlmacen{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	private String tipoMovimiento;
+	private Long codTransaccion;
 	private LocalDateTime fechaMovimiento;
 	private String obsevacionMovimiento;
 	private int catidadMovimineto;
@@ -27,6 +26,10 @@ public class MovAlmacen{
 	@ManyToOne()
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
+
+	@ManyToOne()
+	@JoinColumn(name = "id_tipoMovimiento")
+	private TipoMovimiento tipoMovimiento;
 	private String estado;
 
 }

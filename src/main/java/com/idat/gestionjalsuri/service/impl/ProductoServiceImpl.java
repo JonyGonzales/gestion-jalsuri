@@ -1,4 +1,4 @@
-package com.idat.gestionjalsuri.service;
+package com.idat.gestionjalsuri.service.impl;
 
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Categoria;
@@ -13,6 +13,7 @@ import com.idat.gestionjalsuri.repository.CategoriaRepository;
 import com.idat.gestionjalsuri.repository.ProductoRepository;
 import com.idat.gestionjalsuri.repository.ProveedorRepository;
 import com.idat.gestionjalsuri.repository.UnidadMedidaRepository;
+import com.idat.gestionjalsuri.service.IProductoService;
 import com.idat.gestionjalsuri.util.Constante;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -52,7 +54,7 @@ public class ProductoServiceImpl implements IProductoService {
                 .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de proveedor no encontrado...", HttpStatus.NOT_FOUND)));
         Optional<UnidadMedida> unidadMedida = Optional.ofNullable(this.unidadMedidaRepository.findById(productoRequest.getIdUnidadMedida())
                 .orElseThrow(() -> new ExceptionService(Constante.CODIGO_ID_NO_ENCONTRADO, "Id de unidad medida no encontrado...", HttpStatus.NOT_FOUND)));
-
+        producto.setCodTransaccion(UUID.randomUUID().getMostSignificantBits());
         producto.setNombre(productoRequest.getNombre());
         producto.setStock(productoRequest.getStock());
         producto.setPrecio(productoRequest.getPrecio());

@@ -1,9 +1,10 @@
-package com.idat.gestionjalsuri.service;
+package com.idat.gestionjalsuri.service.impl;
 
 import com.idat.gestionjalsuri.exception.ExceptionService;
 import com.idat.gestionjalsuri.model.entity.Categoria;
 import com.idat.gestionjalsuri.model.request.CategoriaRequest;
 import com.idat.gestionjalsuri.repository.CategoriaRepository;
+import com.idat.gestionjalsuri.service.ICategoriaService;
 import com.idat.gestionjalsuri.util.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

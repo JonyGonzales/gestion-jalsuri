@@ -1,8 +1,9 @@
-package com.idat.gestionjalsuri.service;
+package com.idat.gestionjalsuri.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.idat.gestionjalsuri.service.ITipoDocumentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ import com.idat.gestionjalsuri.model.entity.TipoDocumento;
 import com.idat.gestionjalsuri.repository.TipoDocumentoRepository;
 
 @Service
-public class TipoDocumentoImpl implements ITipoDocumentoService{
+public class TipoDocumentoImpl implements ITipoDocumentoService {
 	
 	@Autowired
 	private TipoDocumentoRepository tipoDocumentoRepository;
